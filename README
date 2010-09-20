@@ -6,6 +6,7 @@ Install:
 - cp config.py.template config.py
 - edit credentials in config.py
 - ./headline.py
+- run it from cron 
 
 License:
 Public Domain: http://creativecommons.org/licenses/publicdomain/
