@@ -14,4 +14,7 @@ def tweet(msg):
     twitter = tweepy.API(auth)
     twitter.update_status(msg)
 
+if __name__ == '__main__':
+    tweet(sys.argv[1])
+
 
