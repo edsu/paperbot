@@ -1,8 +1,6 @@
 These are little bot scripts to automatically interact with the 
-Chronicling America twitter account.
-
-More about Chronicling America can be found at:
-  http://chroniclingamerica.loc.gov
+Chronicling America twitter account, which use content made 
+available from Chronicling America [1] using its public API [2].
 
 Install:
 - pip install -r requirements.pip
@@ -15,3 +13,6 @@ Public Domain: http://creativecommons.org/licenses/publicdomain/
 
 Author:
 Ed Summers <ehs@pobox.com>
+
+[1] http://chroniclingamerica.loc.gov
+[2] http://chroniclingamerica.loc.gov/about/api
