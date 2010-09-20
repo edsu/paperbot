@@ -1,5 +1,5 @@
-These are scripts to automatically post updates to the Chronicling America 
-twitter account [1] using Chronicling America's public API [2].
+These are scripts to automatically post updates to the chronam Twitter account 
+[1] using Chronicling America's public API [2].
 
 Install:
 - pip install -r requirements.pip
