@@ -2,8 +2,9 @@
 
 """
 Kind of an insane little script that looks at all the newspapers in 
-Chronicling America for they same date a hundred years ago, attempts
-to extract a headline from the front page, and sends it as a status update.
+Chronicling America for the current date, one hundred years ago. It then
+attempts to extract headlines from the front page of each paper, and sends 
+the "best" chunk of text it can find as a twitter status update.
 """
 
 import dbm
