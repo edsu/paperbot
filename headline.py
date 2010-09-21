@@ -2,9 +2,10 @@
 
 """
 Kind of an insane little script that looks at all the newspapers in 
-Chronicling America for the current date, one hundred years ago. It then
-attempts to extract headlines from the front page of each paper, and sends 
-the "best" chunk of text it can find as a twitter status update.
+Chronicling America for the current calendar day, one hundred years ago. 
+It then attempts to extract headlines from the front page of each paper
+that is available, and sends the "best" chunk of text it can find as a 
+twitter status update.
 """
 
 import os
@@ -24,7 +25,7 @@ import config
 
 def main(argv):
     if len(argv) > 1: # for testing
-        date = datetime.datetime.strptime(sys.argv[1], '%m/%d/%Y')
+        date = datetime.datetime.strptime(argv[1], '%m/%d/%Y')
     else:
         today = datetime.date.today()
         date = datetime.date(today.year-100, today.month, today.day)
@@ -60,13 +61,20 @@ def front_pages(date):
             if front_page:
                 yield front_page
                 break
-            elif len(response) > 0:
-                search_page += 1
+            # maybe put this back in if there isn't a 302 redirect when 
+            # the requested search page is out of bounds...
+            #elif len(response) > 0:
+            #    search_page += 1
             else:
                 break
 
 
 def blocks(page):
+    """
+    Returns blocks of ocr text from a page, limited to the first 120 characters
+    along with some metadata associated with the block: height, width
+    number of dictionary words, etc.
+    """
     url = 'http://chroniclingamerica.loc.gov/' + page['id'] + 'ocr.xml'
     ns = {'alto': 'http://schema.ccs-gmbh.com/ALTO'}
     doc = etree.parse(url)
@@ -75,6 +83,7 @@ def blocks(page):
     blocks = []
     for b in doc.xpath('//alto:TextBlock', namespaces=ns): 
         text = []
+        text_length = 0
         confidence = 0.0
         string_count = 0
         dictionary_words = 0.0
@@ -82,10 +91,15 @@ def blocks(page):
             for s in l.xpath('alto:String[@CONTENT]', namespaces=ns):
                 string = s.attrib['CONTENT']
                 text.append(string)
+                text_length += len(string)
                 confidence += float(s.attrib['WC'])
                 string_count += 1
                 if dictionary.is_word(string):
                     dictionary_words += 1
+
+            # can't use more text than this in twitter anyhow
+            if text_length > 120:
+                break
 
         if string_count == 0 or dictionary_words == 0:
             continue
@@ -94,6 +108,10 @@ def blocks(page):
         w = float(b.attrib['WIDTH'])
         word_ratio = dictionary_words / string_count
         confidence = confidence / string_count
+
+        # should be a good amount of real words
+        if word_ratio < 0.95:
+            continue
 
         b = {'text': ' '.join(text), 'confidence': confidence,
              'height': h, 'width': w, 'word_ratio': word_ratio,
@@ -111,14 +129,19 @@ def tweetability(a, b):
 
 
 def twitter_msg(headline, date):
+    # calculate how much tweet space there is for a snippet
+    # 140 - (date + short_url + punctuation)
+    d = datetime.datetime.strftime(date, '%b %d, %Y')
+    remaining = 140 - (len(d) + 20 + 5) 
+    snippet = headline['text'][0:remaining]
+
+    # shorten the url
     url = "http://chroniclingamerica.loc.gov%s" % headline['page_id']
     bitly = bitlyapi.BitLy(config.bitly_username, config.bitly_key)
     response = bitly.shorten(longUrl=url)
     short_url = response['url']
 
-    d = datetime.datetime.strftime(date, '%b %d, %Y')
-    remaining = 140 - (len(d) + len(short_url) + 5)
-    msg = '%s: "%s" %s' % (d, headline['text'][0:remaining], short_url)
+    msg = '%s: "%s" %s' % (d, snippet, short_url)
     return msg
 
 
