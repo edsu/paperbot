@@ -7,6 +7,7 @@ attempts to extract headlines from the front page of each paper, and sends
 the "best" chunk of text it can find as a twitter status update.
 """
 
+import os
 import dbm
 import sys
 import json
@@ -86,7 +87,7 @@ def blocks(page):
                 if dictionary.is_word(string):
                     dictionary_words += 1
 
-        if string_count == 0:
+        if string_count == 0 or dictionary_words == 0:
             continue
 
         h = float(b.attrib['HEIGHT'])
@@ -140,14 +141,17 @@ class Dictionary:
     def _open(self):
         try:
             self.db = dbm.open('dictionary', 'r')
-        except:
+        except dbm.error:
             self._make()
             self.db = dbm.open('dictionary', 'r')
 
 
     def _make(self):
+        word_file = '/etc/dictionaries-common/words'
+        if not os.path.isfile(word_file):
+            raise Exception("can't find word file: %s" % word_file)
         db = dbm.open('dictionary', 'c')
-        for word in open('/etc/dictionaries-common/words'):
+        for word in open(word_file, 'r'):
             word = word.lower().strip()
             db[word] = '1'
         db.close()
