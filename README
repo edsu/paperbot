@@ -3,6 +3,7 @@ account [1]. They are meant as a demonstration of things you can do with the
 Chronicling America's public API [2].
 
 Install:
+- aptitude install dictionaries-common
 - pip install -r requirements.pip
 - cp config.py.template config.py
 - edit credentials in config.py

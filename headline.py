@@ -19,6 +19,7 @@ import bitlyapi
 from lxml import etree
 
 import twitter
+import config
 
 def main(argv):
     if len(argv) > 1: # for testing
@@ -33,7 +34,7 @@ def main(argv):
 
     headlines.sort(tweetability)
     msg = twitter_msg(headlines[0], date)
-    tweet(msg)
+    twitter.tweet(msg)
 
 
 def front_pages(date):
