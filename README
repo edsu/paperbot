@@ -1,5 +1,6 @@
-These are scripts to automatically post updates to the chronam Twitter account 
-[1] using Chronicling America's public API [2].
+These are scripts to automatically post updates to the paperbot Twitter 
+account [1]. They are meant as a demonstration of things you can do with the
+Chronicling America's public API [2].
 
 Install:
 - pip install -r requirements.pip
@@ -14,5 +15,5 @@ Public Domain: http://creativecommons.org/licenses/publicdomain/
 Author:
 Ed Summers <ehs@pobox.com>
 
-[1] http://twitter.com/chronam
+[1] http://twitter.com/paperbot
 [2] http://chroniclingamerica.loc.gov/about/api
