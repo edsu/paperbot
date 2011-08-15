@@ -54,7 +54,7 @@ def front_pages(date):
             response = json.loads(urllib.urlopen(url).read())
             front_page = None
             
-            for hit in response:
+            for hit in response['items']:
                 if hit['sequence'] == 1:
                     front_page = hit
 
