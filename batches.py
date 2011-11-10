@@ -31,8 +31,7 @@ def new_batches():
 def seen_batches():
     if not os.path.isfile(batch_db):
         pickle.dump(current_batches(), open(batch_db, 'w'))
-    batches = pickle.load(open(batch_db))
-    return batches['batch_lu_roulette_ver01']
+    return pickle.load(open(batch_db))
 
 def current_batches():
     batches = {}
