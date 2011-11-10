@@ -16,10 +16,9 @@ import random
 import urllib
 import datetime
 
-import bitlyapi
-
 from lxml import etree
 
+import bitly
 import twitter
 import config
 
@@ -137,9 +136,7 @@ def twitter_msg(headline, date):
 
     # shorten the url
     url = "http://chroniclingamerica.loc.gov%s" % headline['page_id']
-    bitly = bitlyapi.BitLy(config.bitly_username, config.bitly_key)
-    response = bitly.shorten(longUrl=url)
-    short_url = response['url']
+    short_url = bitly.shorten(url)
 
     msg = '%s: "%s" %s' % (d, snippet, short_url)
     return msg
