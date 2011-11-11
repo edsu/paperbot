@@ -17,8 +17,8 @@ def main():
         url = bitly.shorten(batch['url'])
         json_url = batch['url'].strip('/') + '.json' 
         batch_info = json.loads(urllib.urlopen(json_url).read())
-        msg = "%s newspaper pages were just loaded from %s as %s %s" % \
-            (batch_info['page_count'], batch['awardee'], batch['name'], url)
+        msg = "%s newspaper pages were just loaded from %s %s" % \
+            (batch_info['page_count'], batch['awardee'], url)
         twitter.tweet(msg)
 
 def new_batches():
