@@ -9,7 +9,7 @@ demonstration of things you can do with the Chronicling America's public
 Install
 -------
 
-1. aptitude install wamerican-insane
+1. aptitude install wamerican-insane # a dictionary
 1. pip install -r requirements.pip
 1. cp config.py.template config.py
 1. edit credentials in config.py
