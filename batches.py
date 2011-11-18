@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import re
 import json
 import pickle
 import urllib
@@ -17,8 +18,9 @@ def main():
         url = bitly.shorten(batch['url'])
         json_url = batch['url'].strip('/') + '.json' 
         batch_info = json.loads(urllib.urlopen(json_url).read())
+        name = format_name(batch['awardee'])
         msg = "%s newspaper pages were just loaded from %s %s" % \
-            (batch_info['page_count'], batch['awardee'], url)
+            (batch_info['page_count'], name, url)
         twitter.tweet(msg)
 
 def new_batches():
@@ -44,6 +46,11 @@ def current_batches():
 
     pickle.dump(batches, open(batch_db, 'w'))
     return batches
+
+def format_name(name):
+    name = re.split("[;,]", name)[0]
+    name = re.sub("^(The )?", "the ", name)
+    return name
 
 if __name__ == "__main__":
     main()
