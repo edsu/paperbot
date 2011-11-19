@@ -22,6 +22,8 @@ import bitly
 import twitter
 import config
 
+stop_words = ['i', 'a']
+
 def main(argv):
     if len(argv) > 1: # for testing
         date = datetime.datetime.strptime(argv[1], '%m/%d/%Y')
@@ -156,7 +158,10 @@ class Dictionary:
         self._open()
 
     def is_word(self, w):
-        return self.db.has_key(w.lower().encode('utf-8')) == 1
+        w = w.lower()
+        if w in stop_words:
+            return False
+        return self.db.has_key(w.encode('utf-8')) == 1
 
     def _open(self):
         try:
