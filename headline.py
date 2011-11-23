@@ -146,11 +146,13 @@ def twitter_msg(headline, date):
 
 def lccns():
     url = 'http://chroniclingamerica.loc.gov/newspapers.txt'
+    lccns = []
     for line in urllib.urlopen(url):
         line = line.strip()
         if not line: continue
-        yield line.split(" | ")[3]
-
+        cols = line.split(" | ")
+        lccns.append(cols[3])
+    return lccns
 
 class Dictionary:
 
