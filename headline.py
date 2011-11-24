@@ -78,10 +78,15 @@ def blocks(page):
     """
     url = 'http://chroniclingamerica.loc.gov/' + page['id'] + 'ocr.xml'
     ns = {'alto': 'http://schema.ccs-gmbh.com/ALTO'}
-    doc = etree.parse(url)
     dictionary = Dictionary()
 
     blocks = []
+    try:
+        # some pages are not digitized, and don't have ocr
+        doc = etree.parse(url)
+    except:
+        return blocks
+
     for b in doc.xpath('//alto:TextBlock', namespaces=ns): 
         text = []
         text_length = 0
