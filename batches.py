@@ -36,14 +36,15 @@ def seen_batches():
     return pickle.load(open(batch_db))
 
 def current_batches():
-    batches = {}
+    # important to load the batches we have seen in case the batches feed
+    # fails to load and then we think we've never announced any!
+    batches = seen_batches()
     feed = feedparser.parse('http://chroniclingamerica.loc.gov/batches/feed/')
     for entry in feed.entries:
         batches[entry.title] = {'name': entry.title,
                                 'awardee': entry.author,
                                 'url': entry.link, 
                                 'updated': entry.updated_parsed}
-
     pickle.dump(batches, open(batch_db, 'w'))
     return batches
 

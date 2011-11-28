@@ -22,8 +22,6 @@ import bitly
 import twitter
 import config
 
-stop_words = ['i', 'a']
-
 def main(argv):
     if len(argv) > 1: # for testing
         date = datetime.datetime.strptime(argv[1], '%m/%d/%Y')
@@ -130,7 +128,7 @@ def blocks(page):
 
 def tweetability(a, b):
     def index(block):
-        return block['height'] * block['word_ratio']
+        return block['height'] * block['word_ratio'] * len(block['text'])
     return cmp(index(b), index(a))
 
 
@@ -166,7 +164,7 @@ class Dictionary:
 
     def is_word(self, w):
         w = w.lower()
-        if w in stop_words:
+        if len(w) < 4:
             return False
         return self.db.has_key(w.encode('utf-8')) == 1
 
