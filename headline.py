@@ -101,25 +101,28 @@ def blocks(page):
                 if dictionary.is_word(string):
                     dictionary_words += 1
 
-            # can't use more text than this in twitter anyhow
-            if text_length > 120:
-                break
-
         if string_count == 0 or dictionary_words == 0:
             continue
 
-        h = float(b.attrib['HEIGHT'])
-        w = float(b.attrib['WIDTH'])
-        word_ratio = dictionary_words / string_count
-        confidence = confidence / string_count
+        text = ' '.join(text)
+        h = int(b.attrib['HEIGHT'])
+        w = int(b.attrib['WIDTH'])
+        vpos = float(b.attrib['VPOS'])
 
-        # should be a good amount of real words
-        if word_ratio < 0.95:
+        # ignore masthead
+        if vpos < 1500:
             continue
 
-        b = {'text': ' '.join(text), 'confidence': confidence,
+        # ignore text > 80 characters, we're looking for short headlines
+        if len(text) > 80:
+            continue
+
+        word_ratio = dictionary_words / len(text)
+        confidence = confidence / string_count
+
+        b = {'text': text, 'confidence': confidence,
              'height': h, 'width': w, 'word_ratio': word_ratio,
-             'lccn': page['lccn'], 'page_id': page['id']} 
+             'vpos': vpos, 'lccn': page['lccn'], 'page_id': page['id']} 
 
         blocks.append(b)
 
@@ -128,7 +131,7 @@ def blocks(page):
 
 def tweetability(a, b):
     def index(block):
-        return block['height'] * block['word_ratio'] * len(block['text'])
+        return ((block['height'] * block['width']) ^ 2) * block['word_ratio'] * (1/block['vpos'])
     return cmp(index(b), index(a))
 
 
