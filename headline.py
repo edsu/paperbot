@@ -110,7 +110,7 @@ def blocks(page):
         vpos = float(b.attrib['VPOS'])
 
         # ignore masthead
-        if vpos < 1500:
+        if vpos < 1800:
             continue
 
         # ignore text > 80 characters, we're looking for short headlines
@@ -131,7 +131,7 @@ def blocks(page):
 
 def tweetability(a, b):
     def index(block):
-        return ((block['height'] * block['width']) ^ 2) * block['word_ratio'] * (1/block['vpos'])
+        return ((block['height'] * block['width']) ^ 2) * block['word_ratio'] * len(block['text']) * (1/block['vpos'])
     return cmp(index(b), index(a))
 
 
