@@ -14,7 +14,7 @@ Install
 1. cp config.py.template config.py
 1. edit credentials in config.py
 1. ./headline.py
-1. ./batches.py
+1. ./retweet.py
 1. run it from cron 
 
 License

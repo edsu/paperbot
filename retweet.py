@@ -2,7 +2,7 @@
 
 """
 Retweet people that look like they are finding interesting stuff on 
-chroniclignamerica.loc.gov ; might need to turn this off if it proves 
+chroniclingamerica.loc.gov ; might need to turn this off if it proves 
 to be too noisy.
 """
 
