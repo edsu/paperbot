@@ -36,8 +36,7 @@ for tweet in tweets:
         continue
     if last and tweet.created_at < last:
         continue
-    print tweet.text.encode('utf8'), tweet.created_at
-    #tweet.retweet()
+    tweet.retweet()
     time.sleep(random.randint(30, 100))
 
 if not os.path.isfile(touchfile):
