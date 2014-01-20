@@ -35,8 +35,10 @@ for tweet in tweets:
         continue
     if last and tweet.created_at < last:
         continue
+    if tweet.text.startswith("RT"):
+        continue
     tweet.retweet()
-    time.sleep(random.randint(30, 100))
+    time.sleep(random.randint(30, 200))
 
 if not os.path.isfile(touchfile):
     open(touchfile, "w")
