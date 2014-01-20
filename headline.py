@@ -50,7 +50,12 @@ def front_pages(date):
         search_page = 1
         while True:
             url = search % (day, day, search_page, lccn) 
-            response = json.loads(urllib.urlopen(url).read())
+            try:
+                response = json.loads(urllib.urlopen(url).read())
+            except ValueError, e:
+                print "error getting JSON from %s" % url
+                continue
+
             front_page = None
             
             for hit in response['items']:
