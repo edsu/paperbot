@@ -13,7 +13,6 @@ could create a literal echo chamber :-)
 """
 
 import os
-import json
 import time
 import random
 import datetime
