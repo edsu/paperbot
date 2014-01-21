@@ -4,6 +4,12 @@
 Retweet people that look like they are finding interesting stuff on 
 chroniclingamerica.loc.gov ; might need to turn this off if it proves 
 to be too noisy.
+
+We remember which tweets we've already retweeted by setting the mtime
+on touchfile to the date of the last tweet we've seen. We also take 
+care not to retweet ourselves, and not to retweet other retweets, which
+could create a literal echo chamber :-)
+
 """
 
 import os
@@ -38,7 +44,7 @@ for tweet in tweets:
     if tweet.text.startswith("RT"):
         continue
     tweet.retweet()
-    time.sleep(random.randint(30, 200))
+    time.sleep(random.randint(2, 30))
 
 if not os.path.isfile(touchfile):
     open(touchfile, "w")
