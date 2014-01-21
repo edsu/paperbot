@@ -38,11 +38,14 @@ for tweet in tweets:
         continue
     if tweet.possibly_sensitive:
         continue
-    if last and tweet.created_at < last:
+    if last and tweet.created_at <= last:
         continue
     if tweet.text.startswith("RT"):
         continue
-    tweet.retweet()
+    try:
+        tweet.retweet()
+    except Exception as e:
+        print e
     time.sleep(random.randint(2, 30))
 
 if not os.path.isfile(touchfile):
