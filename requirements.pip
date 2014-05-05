@@ -1,3 +1,4 @@
-bitlyapi
-tweepy
 lxml
+tweepy
+bitlyapi
+requests
