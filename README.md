@@ -22,8 +22,3 @@ License
 -------
 
 * [Public Domain](http://creativecommons.org/licenses/publicdomain/)
-
-Author
-------
-
-* Ed Summers [ehs@pobox.com](mailto:ehs@pobox.com)
