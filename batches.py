@@ -3,15 +3,15 @@
 import os
 import re
 import json
+import time
+import bitly
 import pickle
+import twitter
 import urllib
-
 import feedparser
 
-import bitly
-import twitter
 
-batch_db = "batches.db"
+batches_json = "batches.json"
 
 def main():
     for batch in new_batches():
@@ -22,6 +22,7 @@ def main():
         msg = "%s newspaper pages were just loaded from %s %s" % \
             (batch_info['page_count'], name, url)
         twitter.tweet(msg)
+        time.sleep(5)
 
 def new_batches():
     seen = seen_batches()
@@ -31,22 +32,24 @@ def new_batches():
             yield current[batch_name]
 
 def seen_batches():
-    if not os.path.isfile(batch_db):
-        pickle.dump(current_batches(), open(batch_db, 'w'))
-    return pickle.load(open(batch_db))
+    if not os.path.isfile(batches_json):
+        batches = current_batches()
+        save_batches(batches)
+    return json.loads(open(batches_json).read())
 
 def current_batches():
-    # important to load the batches we have seen in case the batches feed
-    # fails to load and then we think we've never announced any!
-    batches = seen_batches()
     feed = feedparser.parse('http://chroniclingamerica.loc.gov/batches/feed/')
+    batches = {}
     for entry in feed.entries:
         batches[entry.title] = {'name': entry.title,
                                 'awardee': entry.author,
                                 'url': entry.link, 
-                                'updated': entry.updated_parsed}
-    pickle.dump(batches, open(batch_db, 'w'))
+                                'updated': entry.updated}
+    save_batches(batches)
     return batches
+
+def save_batches(batches):
+    open(batches_json, "w").write(json.dumps(batches, indent=2))
 
 def format_name(name):
     name = re.split("[;,]", name)[0]
