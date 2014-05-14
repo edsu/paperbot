@@ -1,4 +1,5 @@
 config.py
 *.pyc
 dictionary.db
-batches.db
+batches.json
+last_retweet
