@@ -27,6 +27,8 @@ def main():
 def new_batches():
     seen = seen_batches()
     current = current_batches()
+    if len(current) == 0:
+        return
     for batch_name in current.keys():
         if not seen.has_key(batch_name):
             yield current[batch_name]
@@ -49,7 +51,8 @@ def current_batches():
     return batches
 
 def save_batches(batches):
-    open(batches_json, "w").write(json.dumps(batches, indent=2))
+    if len(batches) > 0:
+        open(batches_json, "w").write(json.dumps(batches, indent=2))
 
 def format_name(name):
     name = re.split("[;,]", name)[0]
