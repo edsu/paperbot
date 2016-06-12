@@ -18,6 +18,7 @@ and other weirdness.
 
 import os
 import time
+import config
 import random
 import datetime
 import requests
@@ -55,6 +56,8 @@ for tweet in tweets:
     if tweet.user.screen_name == "paperbot":
         continue
     if hasattr(tweet, 'possibly_sensitive') and tweet.possibly_sensitive:
+        continue
+    if tweet.user.screen_name in config.block:
         continue
     if last and tweet.created_at <= last:
         continue

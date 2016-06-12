@@ -4,3 +4,4 @@ twitter_oauth_access_token_key = ""
 twitter_oauth_access_token_secret = ""
 bitly_username = ""
 bitly_key = ""
+blocklist = []
