@@ -1,4 +1,4 @@
 lxml
 tweepy
-bitlyapi
 requests
+feedparser

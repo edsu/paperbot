@@ -18,7 +18,6 @@ import datetime
 
 from lxml import etree
 
-import bitly
 import twitter
 import config
 
@@ -43,7 +42,7 @@ def front_pages(date):
     Returns all newspaper front pages for a given day.
     """
     day = datetime.datetime.strftime(date, '%m/%d/%Y')
-    search = "http://chroniclingamerica.loc.gov/search/pages/results/" + \
+    search = "https://chroniclingamerica.loc.gov/search/pages/results/" + \
              "?date1=%s&date2=%s&format=json&dateFilterType=range&page=%s" + \
              "&lccn=%s" 
     for lccn in lccns():
@@ -79,15 +78,17 @@ def blocks(page):
     along with some metadata associated with the block: height, width
     number of dictionary words, etc.
     """
-    url = 'http://chroniclingamerica.loc.gov/' + page['id'] + 'ocr.xml'
+    url = 'https://chroniclingamerica.loc.gov/' + page['id'] + 'ocr.xml'
     ns = {'alto': 'http://schema.ccs-gmbh.com/ALTO'}
     dictionary = Dictionary()
 
     blocks = []
     try:
         # some pages are not digitized, and don't have ocr
-        doc = etree.parse(url)
-    except:
+        xml = urllib.urlopen(url).read()
+        doc = etree.fromstring(xml)
+    except Exception as e:
+        print(e)
         return blocks
 
     for b in doc.xpath('//alto:TextBlock', namespaces=ns): 
@@ -148,15 +149,14 @@ def twitter_msg(headline, date):
     snippet = headline['text'][0:remaining]
 
     # shorten the url
-    url = "http://chroniclingamerica.loc.gov%s" % headline['page_id']
-    short_url = bitly.shorten(url)
+    url = "https://chroniclingamerica.loc.gov%s" % headline['page_id']
 
-    msg = '%s: "%s" %s' % (d, snippet, short_url)
+    msg = '%s: "%s" %s' % (d, snippet, url)
     return msg
 
 
 def lccns():
-    url = 'http://chroniclingamerica.loc.gov/newspapers.txt'
+    url = 'https://chroniclingamerica.loc.gov/newspapers.txt'
     lccns = []
     for line in urllib.urlopen(url):
         line = line.strip()

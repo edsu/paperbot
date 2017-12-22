@@ -4,7 +4,6 @@ import os
 import re
 import json
 import time
-import bitly
 import pickle
 import twitter
 import urllib
@@ -15,7 +14,6 @@ batches_json = "batches.json"
 
 def main():
     for batch in new_batches():
-        url = bitly.shorten(batch['url'])
         json_url = batch['url'].strip('/') + '.json' 
         batch_info = json.loads(urllib.urlopen(json_url).read())
         name = format_name(batch['awardee'])
@@ -40,7 +38,7 @@ def seen_batches():
     return json.loads(open(batches_json).read())
 
 def current_batches():
-    feed = feedparser.parse('http://chroniclingamerica.loc.gov/batches/feed/')
+    feed = feedparser.parse('https://chroniclingamerica.loc.gov/batches/feed/')
     batches = {}
     for entry in feed.entries:
         batches[entry.title] = {'name': entry.title,
