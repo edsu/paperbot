@@ -18,7 +18,7 @@ def main():
         batch_info = json.loads(urllib.urlopen(json_url).read())
         name = format_name(batch['awardee'])
         msg = "%s newspaper pages were just loaded from %s %s" % \
-            (batch_info['page_count'], name, url)
+            (batch_info['page_count'], name, batch['url'])
         twitter.tweet(msg)
         time.sleep(5)
 
@@ -30,6 +30,7 @@ def new_batches():
     for batch_name in current.keys():
         if not seen.has_key(batch_name):
             yield current[batch_name]
+    save_batches(current)
 
 def seen_batches():
     if not os.path.isfile(batches_json):
@@ -45,7 +46,6 @@ def current_batches():
                                 'awardee': entry.author,
                                 'url': entry.link, 
                                 'updated': entry.updated}
-    save_batches(batches)
     return batches
 
 def save_batches(batches):
