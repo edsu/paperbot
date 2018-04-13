@@ -31,7 +31,7 @@ def all_chronam_urls(tweet):
         url = u['expanded_url']
         try:
             r = requests.get(url)
-            if not r.url.startswith('http://chroniclingamerica.loc.gov'):
+            if not r.url.startswith('https://chroniclingamerica.loc.gov'):
                 return False
         except:
             # if we couldn't fetch the URL we don't want to tweet it anyway
