@@ -88,7 +88,6 @@ def blocks(page):
         xml = urllib.urlopen(url).read()
         doc = etree.fromstring(xml)
     except Exception as e:
-        print(e)
         return blocks
 
     for b in doc.xpath('//alto:TextBlock', namespaces=ns): 
