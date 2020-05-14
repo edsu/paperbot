@@ -2,4 +2,4 @@ twitter_oauth_consumer_key = ""
 twitter_oauth_consumer_secret = ""
 twitter_oauth_access_token_key = ""
 twitter_oauth_access_token_secret = ""
-blocklist = []
+block = []
