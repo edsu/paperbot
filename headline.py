@@ -52,7 +52,6 @@ def front_pages(date):
             try:
                 response = json.loads(urllib.urlopen(url).read())
             except ValueError, e:
-                print "error getting JSON from %s" % url
                 continue
 
             front_page = None
